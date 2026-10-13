@@ -42,7 +42,7 @@ namespace TARge25Shop.SeleniumTesting
 
             //kontroll
             Assert.Equal("i add name for spaceship", spaceShipNameData);
-            Assert.Equal("i add ship type for spaceship", spaceShipTypeData);
+            Assert.True(spaceShipTypeData == "i add ship type for spaceship");
             Assert.Equal("12345", spaceShipCrewData);
 
             driver.Quit();
@@ -75,28 +75,23 @@ namespace TARge25Shop.SeleniumTesting
             }
 
             //andmete kogumine pärast reloadi
-            IWebElement details_SpaceshipId =
-                driver.FindElement(By.Id("Details_SpaceshipId"));
+            IWebElement details_SpaceshipId = driver.FindElement(By.Id("Details_SpaceshipId"));
             var details_id = details_SpaceshipId.Text;
 
-            IWebElement details_SpaceshipName =
-                driver.FindElement(By.Id("Details_SpaceshipName"));
+            IWebElement details_SpaceshipName = driver.FindElement(By.Id("Details_SpaceshipName"));
             var details_name = details_SpaceshipName.Text;
 
-            IWebElement details_SpaceshipType =
-                driver.FindElement(By.Id("Details_SpaceshipType"));
+            IWebElement details_SpaceshipType = driver.FindElement(By.Id("Details_SpaceshipType"));
             var details_type = details_SpaceshipType.Text;
 
-            IWebElement details_SpaceshipCrew =
-                driver.FindElement(By.Id("Details_SpaceshipCrew"));
+            IWebElement details_SpaceshipCrew = driver.FindElement(By.Id("Details_SpaceshipCrew"));
             var details_crew = details_SpaceshipCrew.Text;
 
-            IWebElement details_SpaceshipPower =
-                driver.FindElement(By.Id("Details_SpaceshipPower"));
+            IWebElement details_SpaceshipPower = driver.FindElement(By.Id("Details_SpaceshipPower"));
             var details_power = details_SpaceshipPower.Text;
 
             //kontroll
-            Assert.NotNull(details_id);
+            Assert.False(string.IsNullOrWhiteSpace(details_id));
             Assert.Equal("i add name for spaceship", details_name);
             Assert.Equal("i add ship type for spaceship", details_type);
             Assert.Equal("12345", details_crew);
@@ -134,10 +129,13 @@ namespace TARge25Shop.SeleniumTesting
             //sisestatavad andmed
             InsertSpaceShipData(driver, true);
 
-            IWebElement cu_CreateSpaceship =
-                driver.FindElement(By.Id("CU_CreateSpaceship"));
-            cu_CreateSpaceship.Click();
+            //salvestame muudetud andmed
+            IWebElement cu_UpdateSpaceship =
+                driver.FindElement(By.CssSelector("button[type='submit'], input[type='submit']"));
 
+            cu_UpdateSpaceship.Click();
+
+            //arvuti tudub
             Thread.Sleep(1000);
 
             driver.Quit();
@@ -145,16 +143,16 @@ namespace TARge25Shop.SeleniumTesting
 
         private static IWebDriver SetupAndNavigateSIndex()
         {
-            //firefoxi draiver
+            //firefoxi käskiv ja juhtiv draiver
             IWebDriver driver = new FirefoxDriver();
 
-            //aadress
-            driver.Url = "https://localhost:7227/";
+            //aadress millele draiver navigeerib
+            driver.Url = "http://localhost:5277/";
 
-            //navigeerimine Spaceship lehele
-            IWebElement navigateToSpaceship =
-                driver.FindElement(By.LinkText("Spaceship"));
+            //lehelt otsitav element
+            IWebElement navigateToSpaceship = driver.FindElement(By.LinkText("Spaceship"));
 
+            //selle elemendiga tehtav tegevus
             navigateToSpaceship.Click();
 
             return driver;
@@ -162,33 +160,21 @@ namespace TARge25Shop.SeleniumTesting
 
         private void InsertSpaceShipData(IWebDriver driver, bool isUpdate = false)
         {
-            IWebElement cu_NameEntrySpaceship =
-                driver.FindElement(By.Id("CU_NameEntrySpaceship"));
-
+            IWebElement cu_NameEntrySpaceship = driver.FindElement(By.Id("CU_NameEntrySpaceship"));
             cu_NameEntrySpaceship.Clear();
-            cu_NameEntrySpaceship.SendKeys(
-                isUpdate ? "updated spaceship name" : "i add name for spaceship");
+            cu_NameEntrySpaceship.SendKeys(isUpdate ? "updated spaceship name" : "i add name for spaceship");
 
-            IWebElement cu_ShipTypeEntrySpaceship =
-                driver.FindElement(By.Id("CU_ShipTypeEntrySpaceship"));
-
+            IWebElement cu_ShipTypeEntrySpaceship = driver.FindElement(By.Id("CU_ShipTypeEntrySpaceship"));
             cu_ShipTypeEntrySpaceship.Clear();
-            cu_ShipTypeEntrySpaceship.SendKeys(
-                isUpdate ? "updated ship type" : "i add ship type for spaceship");
+            cu_ShipTypeEntrySpaceship.SendKeys(isUpdate ? "updated ship type" : "i add ship type for spaceship");
 
-            IWebElement cu_CrewEntrySpaceship =
-                driver.FindElement(By.Id("CU_CrewEntrySpaceship"));
-
+            IWebElement cu_CrewEntrySpaceship = driver.FindElement(By.Id("CU_CrewEntrySpaceship"));
             cu_CrewEntrySpaceship.Clear();
-            cu_CrewEntrySpaceship.SendKeys(
-                isUpdate ? "54321" : "12345");
+            cu_CrewEntrySpaceship.SendKeys(isUpdate ? "54321" : "12345");
 
-            IWebElement cu_EnginePowerEntrySpaceship =
-                driver.FindElement(By.Id("CU_EnginePowerEntrySpaceship"));
-
+            IWebElement cu_EnginePowerEntrySpaceship = driver.FindElement(By.Id("CU_EnginePowerEntrySpaceship"));
             cu_EnginePowerEntrySpaceship.Clear();
-            cu_EnginePowerEntrySpaceship.SendKeys(
-                isUpdate ? "777778" : "666667");
+            cu_EnginePowerEntrySpaceship.SendKeys(isUpdate ? "777778" : "666667");
         }
     }
 }
