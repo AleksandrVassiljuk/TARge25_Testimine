@@ -8,9 +8,11 @@ namespace TARge25Shop.SeleniumTesting
 {
     public class KindergartenFrontendTests
     {
+        private const string BaseUrl = "https://localhost:7227/Kindergarten";
+
         /// <summary>
         /// Kontrollib, kas uut Kindergarten rühma saab luua
-        /// ja kas sisestatud andmed on õigesti salvestatud.
+        /// ja kas sisestatud andmed salvestatakse õigesti.
         /// </summary>
         [Fact]
         public void Should_CreateKindergarten_WithCorrectData()
@@ -21,27 +23,20 @@ namespace TARge25Shop.SeleniumTesting
 
             try
             {
-                driver.Url = "https://localhost:7227/Kindergarten";
+                driver.Url = BaseUrl;
 
                 // Tegevus
-                IWebElement createButton = driver.FindElement(By.Id("CreateInIndexKindergarten"));
-                createButton.Click();
+                driver.FindElement(By.Id("CreateInIndexKindergarten")).Click();
 
-                IWebElement group = driver.FindElement(By.Id("GroupName"));
-                group.SendKeys(groupName);
+                driver.FindElement(By.Id("GroupName")).SendKeys(groupName);
 
                 IWebElement children = driver.FindElement(By.Id("ChildrenCount"));
                 children.Clear();
                 children.SendKeys("20");
 
-                IWebElement kindergarten = driver.FindElement(By.Id("KindergartenName"));
-                kindergarten.SendKeys("Tapa Lasteaed");
-
-                IWebElement teacher = driver.FindElement(By.Id("TeacherName"));
-                teacher.SendKeys("Mari");
-
-                IWebElement saveButton = driver.FindElement(By.Id("CU_CreateKindergarten"));
-                saveButton.Click();
+                driver.FindElement(By.Id("KindergartenName")).SendKeys("Tapa Lasteaed");
+                driver.FindElement(By.Id("TeacherName")).SendKeys("Mari");
+                driver.FindElement(By.Id("CU_CreateKindergarten")).Click();
 
                 // Kontroll
                 IWebElement table = driver.FindElement(By.Id("IndexTableKindergarten"));
@@ -72,48 +67,40 @@ namespace TARge25Shop.SeleniumTesting
 
             try
             {
-                driver.Url = "https://localhost:7227/Kindergarten";
+                driver.Url = BaseUrl;
 
                 // Tegevus
-                IWebElement createButton = driver.FindElement(By.Id("CreateInIndexKindergarten"));
-                createButton.Click();
+                driver.FindElement(By.Id("CreateInIndexKindergarten")).Click();
 
-                IWebElement group = driver.FindElement(By.Id("GroupName"));
-                group.SendKeys(groupName);
+                driver.FindElement(By.Id("GroupName")).SendKeys(groupName);
 
                 IWebElement children = driver.FindElement(By.Id("ChildrenCount"));
                 children.Clear();
                 children.SendKeys("20");
 
-                IWebElement kindergarten = driver.FindElement(By.Id("KindergartenName"));
-                kindergarten.SendKeys("Tapa Lasteaed");
-
-                IWebElement teacher = driver.FindElement(By.Id("TeacherName"));
-                teacher.SendKeys("Mari");
-
-                IWebElement saveButton = driver.FindElement(By.Id("CU_CreateKindergarten"));
-                saveButton.Click();
+                driver.FindElement(By.Id("KindergartenName")).SendKeys("Tapa Lasteaed");
+                driver.FindElement(By.Id("TeacherName")).SendKeys("Mari");
+                driver.FindElement(By.Id("CU_CreateKindergarten")).Click();
 
                 IWebElement table = driver.FindElement(By.Id("IndexTableKindergarten"));
 
                 IWebElement row = table.FindElement(
                     By.XPath(".//tr[td[contains(., '" + groupName + "')]]"));
 
-                IWebElement detailsButton = row.FindElement(By.LinkText("Details"));
-                detailsButton.Click();
+                row.FindElement(By.LinkText("Details")).Click();
 
                 // Kontroll
-                IWebElement detailsGroup = driver.FindElement(By.Id("Details_GroupName"));
-                Assert.Equal(groupName, detailsGroup.Text);
+                Assert.Equal(groupName,
+                    driver.FindElement(By.Id("Details_GroupName")).Text);
 
-                IWebElement detailsChildren = driver.FindElement(By.Id("Details_ChildrenCount"));
-                Assert.Equal("20", detailsChildren.Text);
+                Assert.Equal("20",
+                    driver.FindElement(By.Id("Details_ChildrenCount")).Text);
 
-                IWebElement detailsKindergarten = driver.FindElement(By.Id("Details_KindergartenName"));
-                Assert.Equal("Tapa Lasteaed", detailsKindergarten.Text);
+                Assert.Equal("Tapa Lasteaed",
+                    driver.FindElement(By.Id("Details_KindergartenName")).Text);
 
-                IWebElement detailsTeacher = driver.FindElement(By.Id("Details_TeacherName"));
-                Assert.Equal("Mari", detailsTeacher.Text);
+                Assert.Equal("Mari",
+                    driver.FindElement(By.Id("Details_TeacherName")).Text);
             }
             finally
             {
@@ -135,27 +122,20 @@ namespace TARge25Shop.SeleniumTesting
 
             try
             {
-                driver.Url = "https://localhost:7227/Kindergarten";
+                driver.Url = BaseUrl;
 
                 // Loome uue rühma
-                IWebElement createButton = driver.FindElement(By.Id("CreateInIndexKindergarten"));
-                createButton.Click();
+                driver.FindElement(By.Id("CreateInIndexKindergarten")).Click();
 
-                IWebElement group = driver.FindElement(By.Id("GroupName"));
-                group.SendKeys(groupName);
+                driver.FindElement(By.Id("GroupName")).SendKeys(groupName);
 
                 IWebElement children = driver.FindElement(By.Id("ChildrenCount"));
                 children.Clear();
                 children.SendKeys("20");
 
-                IWebElement kindergarten = driver.FindElement(By.Id("KindergartenName"));
-                kindergarten.SendKeys("Tapa Lasteaed");
-
-                IWebElement teacher = driver.FindElement(By.Id("TeacherName"));
-                teacher.SendKeys("Mari");
-
-                IWebElement saveButton = driver.FindElement(By.Id("CU_CreateKindergarten"));
-                saveButton.Click();
+                driver.FindElement(By.Id("KindergartenName")).SendKeys("Tapa Lasteaed");
+                driver.FindElement(By.Id("TeacherName")).SendKeys("Mari");
+                driver.FindElement(By.Id("CU_CreateKindergarten")).Click();
 
                 // Tegevus
                 IWebElement table = driver.FindElement(By.Id("IndexTableKindergarten"));
@@ -163,8 +143,7 @@ namespace TARge25Shop.SeleniumTesting
                 IWebElement row = table.FindElement(
                     By.XPath(".//tr[td[contains(., '" + groupName + "')]]"));
 
-                IWebElement updateButton = row.FindElement(By.LinkText("Update"));
-                updateButton.Click();
+                row.FindElement(By.LinkText("Update")).Click();
 
                 IWebElement updateGroup = driver.FindElement(By.Id("GroupName"));
                 updateGroup.Clear();
@@ -174,12 +153,10 @@ namespace TARge25Shop.SeleniumTesting
                 updateTeacher.Clear();
                 updateTeacher.SendKeys("Anna");
 
-                IWebElement updateSaveButton = driver.FindElement(
-                    By.CssSelector("input[type='submit'][value='Update']"));
+                driver.FindElement(
+                    By.CssSelector("input[type='submit'][value='Update']")).Click();
 
-                updateSaveButton.Click();
-
-                driver.Navigate().GoToUrl("https://localhost:7227/Kindergarten");
+                driver.Navigate().GoToUrl(BaseUrl);
 
                 // Kontroll
                 IWebElement updatedTable = driver.FindElement(By.Id("IndexTableKindergarten"));
@@ -210,27 +187,20 @@ namespace TARge25Shop.SeleniumTesting
 
             try
             {
-                driver.Url = "https://localhost:7227/Kindergarten";
+                driver.Url = BaseUrl;
 
                 // Loome uue rühma
-                IWebElement createButton = driver.FindElement(By.Id("CreateInIndexKindergarten"));
-                createButton.Click();
+                driver.FindElement(By.Id("CreateInIndexKindergarten")).Click();
 
-                IWebElement group = driver.FindElement(By.Id("GroupName"));
-                group.SendKeys(groupName);
+                driver.FindElement(By.Id("GroupName")).SendKeys(groupName);
 
                 IWebElement children = driver.FindElement(By.Id("ChildrenCount"));
                 children.Clear();
                 children.SendKeys("20");
 
-                IWebElement kindergarten = driver.FindElement(By.Id("KindergartenName"));
-                kindergarten.SendKeys("Tapa Lasteaed");
-
-                IWebElement teacher = driver.FindElement(By.Id("TeacherName"));
-                teacher.SendKeys("Mari");
-
-                IWebElement saveButton = driver.FindElement(By.Id("CU_CreateKindergarten"));
-                saveButton.Click();
+                driver.FindElement(By.Id("KindergartenName")).SendKeys("Tapa Lasteaed");
+                driver.FindElement(By.Id("TeacherName")).SendKeys("Mari");
+                driver.FindElement(By.Id("CU_CreateKindergarten")).Click();
 
                 // Tegevus
                 IWebElement table = driver.FindElement(By.Id("IndexTableKindergarten"));
@@ -240,18 +210,15 @@ namespace TARge25Shop.SeleniumTesting
 
                 Assert.Contains(groupName, row.Text);
 
-                IWebElement deleteButton = row.FindElement(By.LinkText("Delete"));
-                deleteButton.Click();
+                row.FindElement(By.LinkText("Delete")).Click();
 
                 Assert.Contains("/Kindergarten/Delete", driver.Url,
                     StringComparison.OrdinalIgnoreCase);
 
-                IWebElement confirmButton = driver.FindElement(
-                    By.CssSelector("input[type='submit'][value='Delete Confirmation']"));
+                driver.FindElement(
+                    By.CssSelector("input[type='submit'][value='Delete Confirmation']")).Click();
 
-                confirmButton.Click();
-
-                driver.Navigate().GoToUrl("https://localhost:7227/Kindergarten");
+                driver.Navigate().GoToUrl(BaseUrl);
 
                 // Kontroll
                 IWebElement updatedTable = driver.FindElement(By.Id("IndexTableKindergarten"));
@@ -279,13 +246,10 @@ namespace TARge25Shop.SeleniumTesting
 
             try
             {
-                driver.Url = "https://localhost:7227/Kindergarten";
+                driver.Url = BaseUrl;
 
                 // Tegevus
-                IWebElement createButton = driver.FindElement(
-                    By.Id("CreateInIndexKindergarten"));
-
-                createButton.Click();
+                driver.FindElement(By.Id("CreateInIndexKindergarten")).Click();
 
                 // Kontroll
                 Assert.Contains("/Kindergarten/Create", driver.Url,
@@ -295,6 +259,141 @@ namespace TARge25Shop.SeleniumTesting
                 Assert.True(driver.FindElement(By.Id("ChildrenCount")).Displayed);
                 Assert.True(driver.FindElement(By.Id("KindergartenName")).Displayed);
                 Assert.True(driver.FindElement(By.Id("TeacherName")).Displayed);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
+
+        /// <summary>
+        /// Kontrollib, kas Kindergarten Index lehel
+        /// kuvatakse tabel ja vajalikud veerud.
+        /// </summary>
+        [Fact]
+        public void Should_DisplayKindergarten_IndexTable()
+        {
+            // Ülesseade
+            IWebDriver driver = new FirefoxDriver();
+
+            try
+            {
+                driver.Url = BaseUrl;
+
+                // Tegevus
+                IWebElement table = driver.FindElement(
+                    By.Id("IndexTableKindergarten"));
+
+                // Kontroll
+                Assert.True(table.Displayed);
+
+                IWebElement header = table.FindElement(By.TagName("thead"));
+
+                Assert.Contains("Nr", header.Text);
+                Assert.Contains("Group", header.Text);
+                Assert.Contains("Kindergarten", header.Text);
+                Assert.Contains("Teacher", header.Text);
+                Assert.Contains("Created", header.Text);
+
+                Assert.True(driver.FindElement(
+                    By.Id("CreateInIndexKindergarten")).Displayed);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
+
+        /// <summary>
+        /// Kontrollib, kas kasutaja saab Kindergarten Details lehelt
+        /// brauseri Back nupuga tagasi Index lehele.
+        /// </summary>
+        [Fact]
+        public void Should_NavigateBackToKindergarten_Index()
+        {
+            // Ülesseade
+            IWebDriver driver = new FirefoxDriver();
+            string groupName = "Mesilased_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+
+            try
+            {
+                driver.Url = BaseUrl;
+
+                // Loome uue rühma
+                driver.FindElement(By.Id("CreateInIndexKindergarten")).Click();
+
+                driver.FindElement(By.Id("GroupName")).SendKeys(groupName);
+
+                IWebElement children = driver.FindElement(By.Id("ChildrenCount"));
+                children.Clear();
+                children.SendKeys("20");
+
+                driver.FindElement(By.Id("KindergartenName")).SendKeys("Tapa Lasteaed");
+                driver.FindElement(By.Id("TeacherName")).SendKeys("Mari");
+                driver.FindElement(By.Id("CU_CreateKindergarten")).Click();
+
+                // Tegevus
+                IWebElement table = driver.FindElement(By.Id("IndexTableKindergarten"));
+
+                IWebElement row = table.FindElement(
+                    By.XPath(".//tr[td[contains(., '" + groupName + "')]]"));
+
+                row.FindElement(By.LinkText("Details")).Click();
+
+                Assert.Equal(groupName,
+                    driver.FindElement(By.Id("Details_GroupName")).Text);
+
+                driver.Navigate().Back();
+
+                // Kontroll
+                IWebElement indexTable = driver.FindElement(
+                    By.Id("IndexTableKindergarten"));
+
+                Assert.True(indexTable.Displayed);
+                Assert.Contains(groupName, indexTable.Text);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
+
+        /// <summary>
+        /// Kontrollib, kas Kindergarten Create lehelt saab
+        /// Back to List nupuga tagasi Index lehele.
+        /// </summary>
+        [Fact]
+        public void Should_ReturnToKindergarten_IndexFromCreate()
+        {
+            // Ülesseade
+            IWebDriver driver = new FirefoxDriver();
+
+            try
+            {
+                driver.Url = BaseUrl;
+
+                // Tegevus
+                IWebElement createButton = driver.FindElement(
+                    By.Id("CreateInIndexKindergarten"));
+
+                createButton.Click();
+
+                Assert.Contains("/Kindergarten/Create", driver.Url,
+                    StringComparison.OrdinalIgnoreCase);
+
+                IWebElement backButton = driver.FindElement(
+                    By.LinkText("Back to List"));
+
+                backButton.Click();
+
+                // Kontroll
+                IWebElement table = driver.FindElement(
+                    By.Id("IndexTableKindergarten"));
+
+                Assert.True(table.Displayed);
+
+                Assert.True(driver.FindElement(
+                    By.Id("CreateInIndexKindergarten")).Displayed);
             }
             finally
             {
