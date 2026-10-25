@@ -197,5 +197,77 @@ namespace TARge25Shop.SeleniumTesting
                 driver.Quit();
             }
         }
+
+        /// <summary>
+        /// Kontrollib, kas Kindergarten rühma saab kustutada
+        /// ja kas kustutatud rühm kaob nimekirjast.
+        /// </summary>
+        [Fact]
+        public void Should_DeleteKindergarten_WithCorrectData()
+        {
+            // Ülesseade
+            IWebDriver driver = new FirefoxDriver();
+            string groupName = "Mesilased_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+
+            try
+            {
+                driver.Url = "https://localhost:7227/Kindergarten";
+
+                // Loome uue rühma
+                IWebElement createButton = driver.FindElement(By.Id("CreateInIndexKindergarten"));
+                createButton.Click();
+
+                IWebElement group = driver.FindElement(By.Id("GroupName"));
+                group.SendKeys(groupName);
+
+                IWebElement children = driver.FindElement(By.Id("ChildrenCount"));
+                children.Clear();
+                children.SendKeys("20");
+
+                IWebElement kindergarten = driver.FindElement(By.Id("KindergartenName"));
+                kindergarten.SendKeys("Tapa Lasteaed");
+
+                IWebElement teacher = driver.FindElement(By.Id("TeacherName"));
+                teacher.SendKeys("Mari");
+
+                IWebElement saveButton = driver.FindElement(By.Id("CU_CreateKindergarten"));
+                saveButton.Click();
+
+                // Tegevus
+                IWebElement table = driver.FindElement(By.Id("IndexTableKindergarten"));
+
+                IWebElement row = table.FindElement(
+                    By.XPath(".//tr[td[contains(., '" + groupName + "')]]"));
+
+                Assert.Contains(groupName, row.Text);
+
+                IWebElement deleteButton = row.FindElement(By.LinkText("Delete"));
+                deleteButton.Click();
+
+                // Kontrollime, kas Delete leht avanes
+                Assert.Contains("/Kindergarten/Delete", driver.Url,
+                    StringComparison.OrdinalIgnoreCase);
+
+                IWebElement confirmButton = driver.FindElement(
+                    By.CssSelector("input[type='submit'][value='Delete Confirmation']"));
+
+                confirmButton.Click();
+
+                // Avame Index lehe uuesti
+                driver.Navigate().GoToUrl("https://localhost:7227/Kindergarten");
+
+                // Kontroll
+                IWebElement updatedTable = driver.FindElement(By.Id("IndexTableKindergarten"));
+
+                var deletedRows = updatedTable.FindElements(
+                    By.XPath(".//tr[td[contains(., '" + groupName + "')]]"));
+
+                Assert.Empty(deletedRows);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
     }
 }
