@@ -120,5 +120,82 @@ namespace TARge25Shop.SeleniumTesting
                 driver.Quit();
             }
         }
+
+        /// <summary>
+        /// Kontrollib, kas Kindergarten rühma andmeid saab muuta
+        /// ja kas muudatused salvestatakse õigesti.
+        /// </summary>
+        [Fact]
+        public void Should_UpdateKindergarten_WithCorrectData()
+        {
+            // Ülesseade
+            IWebDriver driver = new FirefoxDriver();
+            string groupName = "Mesilased_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+            string updatedName = "Liblikad_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+
+            try
+            {
+                driver.Url = "https://localhost:7227/Kindergarten";
+
+                // Loome uue rühma
+                IWebElement createButton = driver.FindElement(By.Id("CreateInIndexKindergarten"));
+                createButton.Click();
+
+                IWebElement group = driver.FindElement(By.Id("GroupName"));
+                group.SendKeys(groupName);
+
+                IWebElement children = driver.FindElement(By.Id("ChildrenCount"));
+                children.Clear();
+                children.SendKeys("20");
+
+                IWebElement kindergarten = driver.FindElement(By.Id("KindergartenName"));
+                kindergarten.SendKeys("Tapa Lasteaed");
+
+                IWebElement teacher = driver.FindElement(By.Id("TeacherName"));
+                teacher.SendKeys("Mari");
+
+                IWebElement saveButton = driver.FindElement(By.Id("CU_CreateKindergarten"));
+                saveButton.Click();
+
+                // Tegevus
+                IWebElement table = driver.FindElement(By.Id("IndexTableKindergarten"));
+
+                IWebElement row = table.FindElement(
+                    By.XPath(".//tr[td[contains(., '" + groupName + "')]]"));
+
+                IWebElement updateButton = row.FindElement(By.LinkText("Update"));
+                updateButton.Click();
+
+                IWebElement updateGroup = driver.FindElement(By.Id("GroupName"));
+                updateGroup.Clear();
+                updateGroup.SendKeys(updatedName);
+
+                IWebElement updateTeacher = driver.FindElement(By.Id("TeacherName"));
+                updateTeacher.Clear();
+                updateTeacher.SendKeys("Anna");
+
+                IWebElement updateSaveButton = driver.FindElement(
+                    By.CssSelector("input[type='submit'][value='Update']"));
+
+                updateSaveButton.Click();
+
+                // Avame Index lehe uuesti
+                driver.Navigate().GoToUrl("https://localhost:7227/Kindergarten");
+
+                // Kontroll
+                IWebElement updatedTable = driver.FindElement(By.Id("IndexTableKindergarten"));
+
+                IWebElement updatedRow = updatedTable.FindElement(
+                    By.XPath(".//tr[td[contains(., '" + updatedName + "')]]"));
+
+                Assert.Contains(updatedName, updatedRow.Text);
+                Assert.Contains("Anna", updatedRow.Text);
+                Assert.Contains("Tapa Lasteaed", updatedRow.Text);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
     }
 }
