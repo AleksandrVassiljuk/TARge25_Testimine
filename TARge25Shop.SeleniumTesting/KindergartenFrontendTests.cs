@@ -179,7 +179,6 @@ namespace TARge25Shop.SeleniumTesting
 
                 updateSaveButton.Click();
 
-                // Avame Index lehe uuesti
                 driver.Navigate().GoToUrl("https://localhost:7227/Kindergarten");
 
                 // Kontroll
@@ -244,7 +243,6 @@ namespace TARge25Shop.SeleniumTesting
                 IWebElement deleteButton = row.FindElement(By.LinkText("Delete"));
                 deleteButton.Click();
 
-                // Kontrollime, kas Delete leht avanes
                 Assert.Contains("/Kindergarten/Delete", driver.Url,
                     StringComparison.OrdinalIgnoreCase);
 
@@ -253,7 +251,6 @@ namespace TARge25Shop.SeleniumTesting
 
                 confirmButton.Click();
 
-                // Avame Index lehe uuesti
                 driver.Navigate().GoToUrl("https://localhost:7227/Kindergarten");
 
                 // Kontroll
@@ -263,6 +260,41 @@ namespace TARge25Shop.SeleniumTesting
                     By.XPath(".//tr[td[contains(., '" + groupName + "')]]"));
 
                 Assert.Empty(deletedRows);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
+
+        /// <summary>
+        /// Kontrollib, kas Kindergarten Create leht avaneb
+        /// ja kas kõik vajalikud sisestusväljad on olemas.
+        /// </summary>
+        [Fact]
+        public void Should_OpenKindergarten_CreatePage()
+        {
+            // Ülesseade
+            IWebDriver driver = new FirefoxDriver();
+
+            try
+            {
+                driver.Url = "https://localhost:7227/Kindergarten";
+
+                // Tegevus
+                IWebElement createButton = driver.FindElement(
+                    By.Id("CreateInIndexKindergarten"));
+
+                createButton.Click();
+
+                // Kontroll
+                Assert.Contains("/Kindergarten/Create", driver.Url,
+                    StringComparison.OrdinalIgnoreCase);
+
+                Assert.True(driver.FindElement(By.Id("GroupName")).Displayed);
+                Assert.True(driver.FindElement(By.Id("ChildrenCount")).Displayed);
+                Assert.True(driver.FindElement(By.Id("KindergartenName")).Displayed);
+                Assert.True(driver.FindElement(By.Id("TeacherName")).Displayed);
             }
             finally
             {
