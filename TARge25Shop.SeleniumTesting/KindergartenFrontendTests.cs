@@ -9,10 +9,9 @@ namespace TARge25Shop.SeleniumTesting
     public class KindergartenFrontendTests
     {
         /// <summary>
-        /// Kontrollib, kas Kindergarten rühma saab luua
-        /// ja kas Details lehel kuvatakse õiged andmed.
+        /// Kontrollib, kas uut Kindergarten rühma saab luua
+        /// ja kas sisestatud andmed on õigesti salvestatud.
         /// </summary>
-
         [Fact]
         public void Should_CreateKindergarten_WithCorrectData()
         {
@@ -60,6 +59,10 @@ namespace TARge25Shop.SeleniumTesting
             }
         }
 
+        /// <summary>
+        /// Kontrollib, kas Kindergarten Details lehel
+        /// kuvatakse loodud rühma õiged andmed.
+        /// </summary>
         [Fact]
         public void Should_ViewKindergarten_Details()
         {
